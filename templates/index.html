@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO_displacement_measurement_web</title>
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+    <!-- 标题 -->
+    <nav class="navbar">
+        <div class="container">
+            <p class="nav-text">Vision Displacement Measurement Web</p>
+        </div>
+    </nav>
+
+    <!--  标题  -->
+    <div class="wrapper">
+        <div class="title">
+            <h2>视频上传 & yolo目标检测 & 光流识别 & 帧更新</h2>
+        </div>
+    </div>
+
+    <!--  四个视频区域  -->
+    <div class="video-grid-container">
+        <div class="video-grid">
+            <div class="video-item upload-item">
+                <p class="video-title">上传视频</p>
+                <input type="file" accept="video/*" id="videoUpload" onchange="loadAndUploadVideo(event)">
+
+                <div style="margin-top: 10px;">
+                    <div style="margin-bottom: 5px;">
+                        <label for="startTime">起始时间 (秒):</label>
+                        <input type="number" id="startTime" min="0" step="0.1" value="0" style="margin-left: 10px;">
+                    </div>
+                    <div>
+                        <label for="endTime">结束时间 (秒):</label>
+                        <input type="number" id="endTime" min="0" step="0.1" value="10" style="margin-left: 10px;">
+                    </div>
+                </div>
+
+                <video id="uploadedVideo" controls style="display:none;">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <div class="video-item">
+                <p class="video-title">yolo目标检测</p>
+                <div>
+                    <label for="modelSelect">选择 YOLO 模型:</label>
+                    <select id="modelSelect">
+                        <option value="yolov8n.pt">YOLOv8n</option>
+                        <option value="yolov8s.pt">YOLOv8s</option>
+                        <option value="yolov8m.pt">YOLOv8m</option>
+                        <option value="yolov9t.pt">YOLOv9t</option>
+                        <option value="YOLOv9s.pt">YOLOv9s</option>
+                        <option value="YOLOv9m.pt">YOLOv9m</option>
+                        <option value="YOLOv10n.pt">YOLOv10n</option>
+                        <option value="YOLOv10s.pt">YOLOv10s</option>
+                        <option value="YOLOv10m.pt">YOLOv10m</option>
+                    </select>
+                </div>
+                <button id="yoloButton">开始计算</button>
+                <div id="progressContainer" style="width: 100%; background: #f3f3f3; display: none;">
+                    <div id="progressBar" style="width: 0; height: 30px; background: #4caf50; text-align: center; color: white;">0% 完成</div>
+                </div>
+                <video id="annotatedVideo" controls style="display:none;">
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <p id="result1"></p>
+            </div>
+            <div class="video-item">
+                <p class="video-title">光流识别</p>
+                <button onclick="calculate('/optical_flow')">开始计算</button>
+                <p id="result2"></p>
+            </div>
+            <div class="video-item">
+                <p class="video-title">yolo追踪 & 帧更新</p>
+                <button onclick="calculate('/frame_update')">开始计算</button>
+                <p id="result3"></p>
+            </div>
+        </div>
+    </div>
+
+    <!--  js脚本  -->
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="../static/js/index.js"></script>
+
+</body>
+</html>
